@@ -4,7 +4,7 @@
  CSE 3rd Year, 6th Semester, NITW
 ===============================================================
 
-Problem Statment -> Create a Service that control services.
+Problem Statment -> Create a Server that control services.
 
 when a new client is created, it creates two fifo file whose name
 are <arg-prefix>r.dat and <arg-prefix>w.dat and prfix is written
@@ -26,7 +26,6 @@ RUN:( execute each command in a new terminal )
 ./server
 ./service 1
 ./service 2
-
 ./client c1
 ./client c2
 ...
