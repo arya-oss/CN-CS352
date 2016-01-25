@@ -39,7 +39,7 @@ int main (){
         eerror("shmat() error");
     }
     for(i=0; i<10; i++){
-        *(serv_id+i) = 0;
+        *(serv_id+i) = 1;
     }
     mkfifo(sfifo, 0666); 
     fd = open(sfifo, O_RDONLY);
@@ -55,7 +55,7 @@ int main (){
         printf("Got a req %s\n", buf);
         strtok_r(buf, " ", &args);
         for(i=0; i<3; i++){
-            if(*(serv_id+5+i) != 1){
+            if(*(serv_id+5+i) == 0){
                 *(serv_id+5+i) = 1;
                 sprintf(sbuf, "%s", buf);
                 kill(*(serv_id+i), SIGUSR1);

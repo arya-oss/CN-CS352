@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
     }
     
     int id = atoi(argv[1])-1;
-
+    *(serv_id+5+id) = 0;
     *(serv_id+id) = (int)getpid();
     printf("starting service %s\n", argv[1]);
 	while(1){
