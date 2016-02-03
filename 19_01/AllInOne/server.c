@@ -47,10 +47,10 @@ int main (){
     
     mkfifo("c5.dat",0666);
     mkfifo("c1.dat", 0666);
-
+	
     fd = open("c5.dat", O_WRONLY);
     if(fd == -1) eerror("open() error");
-    int pfd[2],i; char buf[32];
+    int pfd[2],i; char buf[1024];
     pipe(pfd);
     if(fork() == 0) {
         close(pfd[0]);
@@ -66,11 +66,12 @@ int main (){
             scanf("%s", tmp);
             printf("stdin %s\n", tmp);
         } else {
-            FILE * f = popen("./pclient", "w");
+            FILE * f = popen("./pclient", "r");
             pol[0].fd = pfd[0]; pol[0].events=POLLIN;
             pol[1].fd = open("c1.dat", O_RDONLY); pol[1].events=POLLIN;
             pol[2].fd = fileno(f); pol[2].events = POLLIN;
             while(1){
+            	memset(buf, 1024, '\0');
                 int res = poll(pol, 3, 100);
                 if(res <= 0){
                     continue;
@@ -82,8 +83,8 @@ int main (){
                     read(pol[1].fd, buf, 32);
                     printf("fifo %s\n", buf);
                 } else if(pol[2].revents & POLLIN) {
-                    fgets(buf, 32, f);
-                    printf("popen %s\n", buf);
+                    read(pol[2].fd, buf, 1024);
+                    printf("%s\n", buf);
                 }
             }
         }

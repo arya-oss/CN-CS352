@@ -14,13 +14,11 @@ struct pollfd plfd[MAX]; int nClient=1;
 int wfd[MAX];
 void acceptReq(const char arg[]){
     printf("Got a req %s\n", arg);
-    strcpy(tmp, arg);
-    strcat(tmp, "r.dat");
+    sprintf(tmp, "%sr.dat", arg);
     wfd[nClient] = open(tmp, O_WRONLY);
     if(wfd[nClient] == -1) eerror("WERROR!!!");
     
-    strcpy(tmp, arg);
-    strcat(tmp, "w.dat");
+    sprintf(tmp, "%sw.dat", arg);
     plfd[nClient].fd = open(tmp, O_RDONLY);
     plfd[nClient].events = POLLIN;
     if(plfd[nClient].fd == -1) eerror("RERROR!!!");
@@ -43,10 +41,7 @@ int main (){
                     memset(buf, 128, '\0');
                     read(plfd[i].fd, buf, 128);
                     if (i==0){
-                        //if(nClient == 3)
-                        //    printf("%s\n", buf);
-                        //else
-                            acceptReq(buf);
+                        acceptReq(buf);
                     } else {
                         printf("Send %s to all\n", buf);
                         for(j=1; j<nClient; j++){
@@ -54,7 +49,7 @@ int main (){
                             write(wfd[j], buf, strlen(buf)+1);
                         }
                     }
-                    printf("Caught Signal\n");
+                    //printf("Caught Signal\n");
                 }
             }
         } else{

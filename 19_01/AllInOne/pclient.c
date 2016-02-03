@@ -1,15 +1,10 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define eerror(msg) { printf("%s\n", msg); exit(1); }   
+#include <stdio.h>  
 
 int main (){
-	int i;
-	for (i = 0; i<1000; ++i) {
-		printf("message %d\n", i);
-		sleep(2);
+	int i=0;
+	while(i < 20) {
+		printf("message from popen %d\n", i);
+		i++;
 	}
     return 0;
 }

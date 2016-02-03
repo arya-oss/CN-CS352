@@ -11,9 +11,6 @@ int main (int argc, char * argv[]){
     if(argc == 1)
         eerror("Usage: ./client <unique-name>");
     char buf[128], tmp[128];
-    int fd = open(sfifo, O_WRONLY);
-    write(fd, argv[1], strlen(argv[1]));
-    close(fd);
     
     strcpy(tmp, argv[1]);
     strcat(tmp, "r.dat");
@@ -22,6 +19,10 @@ int main (int argc, char * argv[]){
     strcpy(buf, argv[1]);
     strcat(buf, "w.dat");
     mkfifo(buf, 0666);
+    
+    int fd = open(sfifo, O_WRONLY);
+    write(fd, argv[1], strlen(argv[1]));
+    close(fd);
     
     int fd_r = open(tmp, O_RDONLY);
     if(fd_r == -1) eerror("fd_r error");
