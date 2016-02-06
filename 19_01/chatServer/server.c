@@ -43,13 +43,12 @@ int main (){
                     if (i==0){
                         acceptReq(buf);
                     } else {
-                        printf("Send %s to all\n", buf);
+                        sprintf(tmp, "P%d: %s", i, buf);
                         for(j=1; j<nClient; j++){
                             if(j != i)
-                            write(wfd[j], buf, strlen(buf)+1);
+                            write(wfd[j], tmp, 128);
                         }
                     }
-                    //printf("Caught Signal\n");
                 }
             }
         } else{

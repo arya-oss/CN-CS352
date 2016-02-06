@@ -1,8 +1,7 @@
 #!/bin/sh
-#!/bin/sh
 
 gcc server.c -o server
-gcc client.c -o client
+gcc client.c -o client -lpthread
 
 gcc s1.c -o s1
 gcc s2.c -o s2
@@ -12,11 +11,11 @@ rm *.dat
 # open each server and client in new terminal
 
 gnome-terminal -e "bash -c \" ./server; exec bash\""
-sleep 1
-gnome-terminal -e "bash -c \" ./client c1 s1; exec bash\""
-sleep 1
-gnome-terminal -e "bash -c \" ./client c2 s3; exec bash\""
-sleep 1
-gnome-terminal -e "bash -c \" ./client c3 s3; exec bash\""
+sleep 2
+gnome-terminal -e "bash -c \" ./client s1 c1; exec bash\""
+sleep 2
+gnome-terminal -e "bash -c \" ./client s2 c2; exec bash\""
+sleep 2
+gnome-terminal -e "bash -c \" ./client s3 c3; exec bash\""
 
 exit

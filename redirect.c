@@ -61,7 +61,7 @@ void revertStdout()
 }
 
 int main(int argc, char * argv[]) {
-	switchStdin("in.txt");
+	/*switchStdin("in.txt");
 	switchStdout("out.txt");
 	char buf[128];
 	scanf("%s", buf);
@@ -70,5 +70,9 @@ int main(int argc, char * argv[]) {
 	revertStdout();
 	scanf("%s", buf);
 	printf("%s\n", buf);
-	return 0;
+	*/char tmp[128];
+    char buf[32] = "Hello";
+    sprintf(tmp, "%d %s", 4, buf);
+    printf("%s\n", tmp);
+    return 0;
 }
