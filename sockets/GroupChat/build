@@ -1,0 +1,12 @@
+#!/bin/sh
+gcc server.c -o server
+gcc client.c -o client -lpthread
+gcc service.c -o s1
+cp s1 s2
+cp s2 s3
+
+gnome-terminal -e "bash -c \" ./server; exec bash\""
+sleep 1
+gnome-terminal -e "bash -c \" ./client 9500; exec bash\""
+sleep 1
+gnome-terminal -e "bash -c \" ./client 9500; exec bash\""
