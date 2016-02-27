@@ -2,8 +2,8 @@
 gcc server.c -o server
 gcc client.c -o client
 gcc service.c -o s1
-cp s1 s2
-cp s1 s3
+gcc service1.c -o s2
+gcc service2.c -o s3
 cp s1 s4
 echo "compiled successfully !"
 

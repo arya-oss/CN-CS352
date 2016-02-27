@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -37,12 +38,14 @@ int main(int argc, char const *argv[]) {
     if (connect(sfd, (struct sockaddr *) &s_addr, sizeof(s_addr)) < 0)
         eerror("connect() error");
     
-    printf("Type Port no. of Service : ");
-    scanf("%d", &serv_no);
-    sprintf(buf, "%d", serv_no);
+    printf("Type Name of the Service(s1,s2,s3,..) : ");
+    
+    scanf("%s", buf);
     write(sfd, buf, strlen(buf));
     read(sfd, buf, 128);
     close(sfd);
+    serv_no = atoi(buf);
+    printf("%s %d\n", buf, strlen(buf));
     if(strcmp(buf, "exit") == 0) 
         eerror("Service Unavailable !");
 
@@ -59,16 +62,15 @@ int main(int argc, char const *argv[]) {
 
     printf("connection successfull\n");
     
-    while(1) {
+    // while(1) {
         read(0, buf, 128);
         if(write(sfd, buf, strlen(buf)) < 0)
             eerror("send() error")
-        if(strcmp(buf, "exit") == 0)
-            break;
+
         if((n=read(sfd, buffer, 128)) < 0)
             eerror("recv() error");
         write(1, buffer, n);
-    }
+    // }
 
     printf("\nExiting ...\n");
     close(sfd);
