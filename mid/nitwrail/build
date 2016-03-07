@@ -1,0 +1,7 @@
+#!/bin/sh
+rm *_fifo
+mkfifo a_fifo v_fifo h_fifo d_fifo
+gcc train.c -o train
+gcc platform.c -o platform
+gcc station.c -o station
+echo 'compiled !'
