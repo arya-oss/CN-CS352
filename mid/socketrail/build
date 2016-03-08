@@ -1,0 +1,5 @@
+#!/bin/sh
+gcc train.c -o train
+gcc platform.c -o platform
+gcc station.c -o station
+echo 'compiled !'
