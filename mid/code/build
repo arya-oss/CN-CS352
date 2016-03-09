@@ -10,6 +10,6 @@ gcc server.c -o server
 gcc client.c -o client
 gcc p2.c -o p2
 gcc p3.c -o p3
-gcc echo.c -o echo
+gcc echo.c -o echoS
 
 echo 'compiled !'

@@ -14,10 +14,10 @@
  */
 
 int main(int argc, char * argv[]) {
-	int i; char buf[BUFSIZE];
-	for(i=0; i<3; i++){
-		read(0, buf, BUFSIZE);
-		write(1, buf, BUFSIZE);
+	int i;
+	for(i=0; i<5; i++){
+		write(0, "echo_hello", 10);
+		sleep(1);
 	}
 	return 0;
 }

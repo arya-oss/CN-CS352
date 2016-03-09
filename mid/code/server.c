@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <sys/select.h>
+#include <signal.h>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -23,8 +24,26 @@
  * Author: Rajmani Arya
  * Date: 9th March 2016
  */
-int Q[128], nclient=0;
+int Q[128], front = 0, last=0, nclient=0;
+
 int fds[3];
+
+void child_handler() {
+	printf("child exited\n");
+	front--;
+}
+
+void handler() {
+	printf("caught signal\n");
+	int fd = Q[front++];
+	printf("%d\n", fd);
+	
+	if(fork() == 0) {
+		dup2(fd, 1);
+		dup2(fd, 0);
+		execl("echoS", "echoS", NULL);
+	}
+}
 
 void helper() {
 	int fd[2];
@@ -44,6 +63,8 @@ void helper() {
 }
 
 int main(int argc, char * argv[]) {
+	signal(SIGCHLD, child_handler);
+	signal(SIGUSR1, handler);
 	int port;
 	if(argc < 2) 
 		eerror("Usage: ./server <port>");
@@ -77,14 +98,14 @@ int main(int argc, char * argv[]) {
 			cli_len = sizeof(c_addr);
 			if((nsfd = accept(sfd, (struct sockaddr *)&c_addr, &cli_len)) < 0)
 				eerror("accept() error");
-			Q[nclient++] = nsfd;
+			Q[last++] = nsfd;
 		}
 		for (i = 0; i < 3; ++i) {
 			if(FD_ISSET(fds[i], &rfds)) {
 				memset(buf, 0, BUFSIZE);
 				read(fds[i], buf, BUFSIZE);
 				// printf("%s\n", buf);
-				for(j=0; j<nclient; j++) {
+				for(j=front ; j<last; j++) {
 					write(Q[j], buf, BUFSIZE);
 				}
 			}
