@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ -p "fifo" ]
+then
+	echo "fifo found."
+else
+	mkfifo fifo
+fi
+
+gcc server.c -o server
+gcc client.c -o client
+gcc p2.c -o p2
+gcc p3.c -o p3
+gcc echo.c -o echo
+
+echo 'compiled !'
