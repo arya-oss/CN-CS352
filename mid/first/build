@@ -1,0 +1,8 @@
+#!/bin/sh
+gcc p1_1.c -o p1_1
+gcc p1_2.c -o p1_2
+gcc p1_3.c -o p1_3
+gcc p1_4.c -o p1_4
+gcc p1_5.c -o p1_5
+gcc p1_6.c -o p1_6
+echo 'compiled succefully !'

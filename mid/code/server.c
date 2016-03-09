@@ -25,19 +25,20 @@
  * Date: 9th March 2016
  */
 int Q[128], front = 0, last=0, nclient=0;
-
+int S[128], top=-1;
 int fds[3];
 
 void child_handler() {
 	printf("child exited\n");
-	front--;
+	int fd = S[top--];
+	Q[last++] = fd;
 }
 
 void handler() {
 	printf("caught signal\n");
 	int fd = Q[front++];
-	printf("%d\n", fd);
-	
+	S[++top] = fd;
+	// printf("%d\n", fd);
 	if(fork() == 0) {
 		dup2(fd, 1);
 		dup2(fd, 0);
