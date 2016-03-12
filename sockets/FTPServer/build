@@ -1,0 +1,3 @@
+#!/bin/sh
+gcc ftpclient.c -o copyc
+gcc ftpserver.c -o copys -lpthread
