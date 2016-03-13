@@ -23,9 +23,10 @@ RUN: (execute each command in a new terminal)
  and p2 reads x and save p1_pid and writes p2_process id to shared
  memory y and p1 reads it and save it as p2_pid.
 
+files_required -> p2_1.c, p2_2.c and p2.h
 Compile:
-	gcc p1_1.c -o p1
-	gcc p1_2.c -o p2
+	gcc p2_1.c -o p1
+	gcc p2_2.c -o p2
 RUN: (execute each command in a new terminal)
 	./p1
 	./p2
