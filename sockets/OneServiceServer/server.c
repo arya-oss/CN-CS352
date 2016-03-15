@@ -27,11 +27,13 @@ volatile int curr_client_port = -1; // stores current client port
 void * service (void * args) {
 	int i, fd = *(int *) args; char _tmp[128];
 	while(1) {
+		memset(_tmp, 0, 128);
 		read(fd, _tmp, 128);
-		printf("%s\n", _tmp);
+		// printf("A->%s\n", _tmp); // for debugging
 		if(atoi(_tmp) == -1) {
 			available = 1;
 			curr_client_port = 0;
+			// close(fd);
 			pthread_exit(0);
 		}
 		for (i = 0; i < strlen(_tmp); ++i){
@@ -54,46 +56,41 @@ int main(int argc, char * argv[]) {
 	if(sfd == -1) {
 		eerror("socket() error");
 	}
+
 	s_addr.sin_family = AF_INET;
 	s_addr.sin_port = htons((u_short) port);
 	s_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	
 	if(bind(sfd, (struct sockaddr *)&s_addr, sizeof(s_addr)) < 0){
 		eerror("bind() error");
 	}
+	
 	if(listen(sfd, 5) < 0) {
 		eerror("listen() error");
 	}
+	
 	while(1) {
 		cli_len = sizeof(c_addr);
 		nsfd = accept(sfd, (struct sockaddr *)&c_addr, &cli_len);
 		if(nsfd < 0) {
 			eerror("accept() error");
 		}
+		
 		getpeername(nsfd, (struct sockaddr *)&s_addr, &cli_len);
 		printf("Client address IP:Port => %s:%d\n", inet_ntoa(s_addr.sin_addr), ntohs(s_addr.sin_port));
+		
 		if(available) {
+			printf("good to go\n");
 			write(nsfd, "1", 1);
 			curr_client_port = ntohs(s_addr.sin_port);
 			available = 0; // make server busy
 			pthread_create(&pid, NULL, &service, (void *)&nsfd);
 		} else {
+			printf("request denied\n");
 			char _tmp[32];
-			sprintf(_tmp, "%d", (int)ntohs(s_addr.sin_port));
+			sprintf(_tmp, "%d", curr_client_port);
 			write(nsfd, _tmp, strlen(_tmp));
-			sleep(1); // wait of some time for conversation b.w clients
-			read(nsfd, _tmp, 32);
-			if(atoi(_tmp) == 1) {
-				if(available) {
-					getpeername(nsfd, (struct sockaddr *)&s_addr, &cli_len);
-					curr_client_port = ntohs(s_addr.sin_port);
-					available = 0; // make server busy
-					pthread_create(&pid, NULL, &service, (void *)&nsfd);
-				} else {
-					close(nsfd);
-				}
-			} else {
-				close(nsfd);
-			}
+			close(nsfd);
 		}
 	}
 	return 0;
