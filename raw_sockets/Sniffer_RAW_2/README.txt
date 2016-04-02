@@ -7,6 +7,9 @@ Date: 2nd Apr 2016
 
 NOTE: Run these programs with root permissions (sudo).
 
+Sniffer catches both incoming and outgoing packets for
+incoming packet only repalce ETH_P_ALL to ETH_P_IP.
+
 Problem Statment:
 	Create your own custom network protocol using raw sockets
 	with IP Header Include and write a client-server program 

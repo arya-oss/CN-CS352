@@ -37,16 +37,18 @@ int main(int argc, char const *argv[]) {
             perror("sendto() ");
         }
     	printf("Packet Count %d \n\n", ++total);
-        iph = (struct iphdr *) buffer;
+        iph = (struct iphdr *) buffer; // +sizeof(struct ethhdr)
     	memset((char *)&s_addr, 0, sizeof s_addr);
     	memset((char *)&d_addr, 0, sizeof d_addr);
+    	
     	s_addr.sin_addr.s_addr = iph->saddr;
     	d_addr.sin_addr.s_addr = iph->daddr;
     	iphdrlen = iph->ihl*4;
+    	
     	printf("------------- IP Header ------------\n");
     	printf("|%4d|%4d|%8d|%16d|\n", (unsigned int)iph->version, (unsigned int)iph->ihl, (unsigned int)iph->tos, ntohs(iph->tot_len));
     	printf("------------------------------------\n");
-    	printf("|%16d|R|D|M|%13d|\n", ntohs(iph->id), (unsigned int)iph->frag_off);
+    	printf("|%14d|R|D|M|%13d|\n", ntohs(iph->id), (unsigned int)iph->frag_off);
     	printf("------------------------------------\n");
     	printf("|%8d|%8d|%16d|\n", (unsigned int)iph->ttl, (unsigned int)iph->protocol, ntohs(iph->check));
     	printf("------------------------------------\n");
@@ -56,7 +58,7 @@ int main(int argc, char const *argv[]) {
     	printf("------------------------------------\n");
     	strcpy(buf, buffer+iphdrlen);
     	printf("\tMessage\n %s\n", buf);
-            sleep(2);
+        
     }
     return 0;
 }

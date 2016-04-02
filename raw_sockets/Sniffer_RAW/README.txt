@@ -6,6 +6,8 @@ Date: 2nd Apr 2016
 ====================================================
 
 NOTE: Run these programs with root permissions (sudo).
+Sniffer catches both incoming and outgoing packets for
+incoming packet only repalce ETH_P_ALL to ETH_P_IP.
 
 Problem Statment:
 	Create your own custom network protocol using raw sockets
@@ -19,9 +21,9 @@ Compile:
 ./build
 
 Run: (each command in a new terminal )
-./server 8001
-./sniff
-./client 8001
+sudo ./server 8001
+sudo ./sniff
+sudo ./client 8001
 
 NOTE:
 	Here server binded on port 8001. Its not needed when client wants

@@ -32,14 +32,14 @@ int main(int argc, char * argv[]) {
 		if(n < 0) {
 			perror("recvfrom() ");
 		}
-		iph = (struct iphdr *) buf;
+		iph = (struct iphdr *) (buf+sizeof(struct ethhdr));
 		memset((char *)&s_addr, 0, sizeof s_addr);
 		memset((char *)&d_addr, 0, sizeof d_addr);
 		s_addr.sin_addr.s_addr = iph->saddr;
 		d_addr.sin_addr.s_addr = iph->daddr;
-		if (iph->protocol != 146)
-			continue;
+		
 		iphdrlen = iph->ihl*4;
+		
 		printf("------------- IP Header ------------\n");
 		printf("|%4d|%4d|%8d|%16d|\n", (unsigned int)iph->version, (unsigned int)iph->ihl, (unsigned int)iph->tos, ntohs(iph->tot_len));
 		printf("------------------------------------\n");

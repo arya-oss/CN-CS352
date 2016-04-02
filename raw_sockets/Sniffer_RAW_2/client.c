@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]) {
         if(sendto(rsfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&addr, sizeof addr) < 0) {
             perror("sendto() ");
         }
-        sleep(3);
+        
     }
     return 0;
 }
