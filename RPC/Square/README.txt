@@ -25,12 +25,13 @@ square_xdr.c Makefile.square
 Now Edit:
 these two files -> square_client.c and square_server.c
 
+Or simply execute given program with following steps !
 COMPILE:
 	make -f Makefile.add
 
 RUN: (open each command in a new terminal)
-	sudo ./add_server
-	sudo ./add_client localhost
+	sudo ./square_server
+	square_client localhost
 	
 NOTE: 
 	cmd line argument for client is hostname of server program
