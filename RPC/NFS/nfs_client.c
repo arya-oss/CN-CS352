@@ -12,6 +12,8 @@ int getCommandType(char * str) {
 		return 3; // write -> 3
 	} else if(strcmp("exit", str) == 0) {
 		return 0; // exit -> 0
+	} else if(strcmp("cd", str) == 0) {
+		return 4;
 	}
 	return -1;
 }
@@ -26,6 +28,8 @@ nfs_arya_1(char *host)
 	file_args_w  nfs_write_1_arg;
 	bufsize  *result_3;
 	file_args_r  nfs_read_1_arg;
+	int  *result_4;
+	file_args_r  nfs_cd_1_arg;
 	char buffer[1024]; char * tok;
 #ifndef	DEBUG
 	clnt = clnt_create (host, nfs_arya, nfs, "udp");
@@ -112,6 +116,24 @@ nfs_arya_1(char *host)
 						printf("Wrting Error occured, File not exist or access denied.\n");
 					} else {
 						printf("%d byte written !\n", *result_2);
+					}
+				}
+				break;
+			case 4: // cd
+				if(i!=1) {
+					printf("usage: cd <dir>\n");
+					break;
+				}
+				strtok(args[0], "\n");
+				strcpy(nfs_cd_1_arg.filename, args[0]);
+				result_4 = nfs_cd_1(&nfs_cd_1_arg, clnt);
+				if (result_4 == (int *) NULL) {
+					clnt_perror (clnt, "call failed");
+				} else {
+					if(*result_4 < 0) {
+						printf("Wrong path !\n");
+					} else {
+						printf("Curr directory changed\n");
 					}
 				}
 				break;

@@ -89,3 +89,11 @@ nfs_read_1_svc(file_args_r *argp, struct svc_req *rqstp)
 	}
 	return &result;
 }
+
+int *
+nfs_cd_1_svc(file_args_r *argp, struct svc_req *rqstp)
+{
+	static int  result;
+	result = chdir(argp->filename);
+	return &result;
+}

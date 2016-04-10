@@ -50,6 +50,9 @@ extern  int * nfs_write_1_svc(file_args_w *, struct svc_req *);
 #define nfs_read 3
 extern  bufsize * nfs_read_1(file_args_r *, CLIENT *);
 extern  bufsize * nfs_read_1_svc(file_args_r *, struct svc_req *);
+#define nfs_cd 4
+extern  int * nfs_cd_1(file_args_r *, CLIENT *);
+extern  int * nfs_cd_1_svc(file_args_r *, struct svc_req *);
 extern int nfs_arya_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
@@ -62,6 +65,9 @@ extern  int * nfs_write_1_svc();
 #define nfs_read 3
 extern  bufsize * nfs_read_1();
 extern  bufsize * nfs_read_1_svc();
+#define nfs_cd 4
+extern  int * nfs_cd_1();
+extern  int * nfs_cd_1_svc();
 extern int nfs_arya_1_freeresult ();
 #endif /* K&R C */
 

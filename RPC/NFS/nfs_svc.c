@@ -11,6 +11,7 @@
 #include <memory.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <unistd.h>
 
 #ifndef SIG_PF
 #define SIG_PF void(*)(int)
@@ -23,6 +24,7 @@ nfs_arya_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		file_args_r nfs_ls_1_arg;
 		file_args_w nfs_write_1_arg;
 		file_args_r nfs_read_1_arg;
+		file_args_r nfs_cd_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -51,6 +53,12 @@ nfs_arya_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		local = (char *(*)(char *, struct svc_req *)) nfs_read_1_svc;
 		break;
 
+	case nfs_cd:
+		_xdr_argument = (xdrproc_t) xdr_file_args_r;
+		_xdr_result = (xdrproc_t) xdr_int;
+		local = (char *(*)(char *, struct svc_req *)) nfs_cd_1_svc;
+		break;
+
 	default:
 		svcerr_noproc (transp);
 		return;
@@ -75,7 +83,7 @@ int
 main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
-
+	chdir("~/");
 	pmap_unset (nfs_arya, nfs);
 
 	transp = svcudp_create(RPC_ANYSOCK);

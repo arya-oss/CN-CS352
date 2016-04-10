@@ -53,3 +53,18 @@ nfs_read_1(file_args_r *argp, CLIENT *clnt)
 	}
 	return (&clnt_res);
 }
+
+int *
+nfs_cd_1(file_args_r *argp, CLIENT *clnt)
+{
+	static int clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, nfs_cd,
+		(xdrproc_t) xdr_file_args_r, (caddr_t) argp,
+		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
