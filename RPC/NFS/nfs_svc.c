@@ -11,7 +11,6 @@
 #include <memory.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <unistd.h>
 
 #ifndef SIG_PF
 #define SIG_PF void(*)(int)
@@ -21,10 +20,15 @@ static void
 nfs_arya_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		file_args_r nfs_ls_1_arg;
+		bufnode nfs_ls_1_arg;
 		file_args_w nfs_write_1_arg;
 		file_args_r nfs_read_1_arg;
-		file_args_r nfs_cd_1_arg;
+		bufnode nfs_cd_1_arg;
+		bufnode getattr_1_arg;
+		bufnode setattr_1_arg;
+		bufnode nfs_remove_1_arg;
+		bufnode nfs_mkdir_1_arg;
+		bufnode nfs_touch_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -36,8 +40,8 @@ nfs_arya_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		return;
 
 	case nfs_ls:
-		_xdr_argument = (xdrproc_t) xdr_file_args_r;
-		_xdr_result = (xdrproc_t) xdr_bufsize;
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_bufnode;
 		local = (char *(*)(char *, struct svc_req *)) nfs_ls_1_svc;
 		break;
 
@@ -49,14 +53,44 @@ nfs_arya_1(struct svc_req *rqstp, register SVCXPRT *transp)
 
 	case nfs_read:
 		_xdr_argument = (xdrproc_t) xdr_file_args_r;
-		_xdr_result = (xdrproc_t) xdr_bufsize;
+		_xdr_result = (xdrproc_t) xdr_bufnode;
 		local = (char *(*)(char *, struct svc_req *)) nfs_read_1_svc;
 		break;
 
 	case nfs_cd:
-		_xdr_argument = (xdrproc_t) xdr_file_args_r;
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
 		_xdr_result = (xdrproc_t) xdr_int;
 		local = (char *(*)(char *, struct svc_req *)) nfs_cd_1_svc;
+		break;
+
+	case getattr:
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_bufnode;
+		local = (char *(*)(char *, struct svc_req *)) getattr_1_svc;
+		break;
+
+	case setattr:
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_int;
+		local = (char *(*)(char *, struct svc_req *)) setattr_1_svc;
+		break;
+
+	case nfs_remove:
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_int;
+		local = (char *(*)(char *, struct svc_req *)) nfs_remove_1_svc;
+		break;
+
+	case nfs_mkdir:
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_int;
+		local = (char *(*)(char *, struct svc_req *)) nfs_mkdir_1_svc;
+		break;
+
+	case nfs_touch:
+		_xdr_argument = (xdrproc_t) xdr_bufnode;
+		_xdr_result = (xdrproc_t) xdr_int;
+		local = (char *(*)(char *, struct svc_req *)) nfs_touch_1_svc;
 		break;
 
 	default:
@@ -83,7 +117,7 @@ int
 main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
-	chdir("~/");
+
 	pmap_unset (nfs_arya, nfs);
 
 	transp = svcudp_create(RPC_ANYSOCK);

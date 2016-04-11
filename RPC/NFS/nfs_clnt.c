@@ -9,15 +9,15 @@
 /* Default timeout can be changed using clnt_control() */
 static struct timeval TIMEOUT = { 25, 0 };
 
-bufsize *
-nfs_ls_1(file_args_r *argp, CLIENT *clnt)
+bufnode *
+nfs_ls_1(bufnode *argp, CLIENT *clnt)
 {
-	static bufsize clnt_res;
+	static bufnode clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	if (clnt_call (clnt, nfs_ls,
-		(xdrproc_t) xdr_file_args_r, (caddr_t) argp,
-		(xdrproc_t) xdr_bufsize, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_bufnode, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
@@ -39,15 +39,15 @@ nfs_write_1(file_args_w *argp, CLIENT *clnt)
 	return (&clnt_res);
 }
 
-bufsize *
+bufnode *
 nfs_read_1(file_args_r *argp, CLIENT *clnt)
 {
-	static bufsize clnt_res;
+	static bufnode clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	if (clnt_call (clnt, nfs_read,
 		(xdrproc_t) xdr_file_args_r, (caddr_t) argp,
-		(xdrproc_t) xdr_bufsize, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_bufnode, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
@@ -55,13 +55,88 @@ nfs_read_1(file_args_r *argp, CLIENT *clnt)
 }
 
 int *
-nfs_cd_1(file_args_r *argp, CLIENT *clnt)
+nfs_cd_1(bufnode *argp, CLIENT *clnt)
 {
 	static int clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	if (clnt_call (clnt, nfs_cd,
-		(xdrproc_t) xdr_file_args_r, (caddr_t) argp,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+bufnode *
+getattr_1(bufnode *argp, CLIENT *clnt)
+{
+	static bufnode clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, getattr,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_bufnode, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+int *
+setattr_1(bufnode *argp, CLIENT *clnt)
+{
+	static int clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, setattr,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+int *
+nfs_remove_1(bufnode *argp, CLIENT *clnt)
+{
+	static int clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, nfs_remove,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+int *
+nfs_mkdir_1(bufnode *argp, CLIENT *clnt)
+{
+	static int clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, nfs_mkdir,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
+		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+int *
+nfs_touch_1(bufnode *argp, CLIENT *clnt)
+{
+	static int clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, nfs_touch,
+		(xdrproc_t) xdr_bufnode, (caddr_t) argp,
 		(xdrproc_t) xdr_int, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);

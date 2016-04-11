@@ -14,13 +14,11 @@ extern "C" {
 #endif
 
 
-typedef struct bufsize *bufptr;
-
-struct bufsize {
+struct bufnode {
 	char buffer[1024];
 	u_int size;
 };
-typedef struct bufsize bufsize;
+typedef struct bufnode bufnode;
 
 struct file_args_r {
 	char filename[128];
@@ -42,46 +40,74 @@ typedef struct file_args_w file_args_w;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define nfs_ls 1
-extern  bufsize * nfs_ls_1(file_args_r *, CLIENT *);
-extern  bufsize * nfs_ls_1_svc(file_args_r *, struct svc_req *);
+extern  bufnode * nfs_ls_1(bufnode *, CLIENT *);
+extern  bufnode * nfs_ls_1_svc(bufnode *, struct svc_req *);
 #define nfs_write 2
 extern  int * nfs_write_1(file_args_w *, CLIENT *);
 extern  int * nfs_write_1_svc(file_args_w *, struct svc_req *);
 #define nfs_read 3
-extern  bufsize * nfs_read_1(file_args_r *, CLIENT *);
-extern  bufsize * nfs_read_1_svc(file_args_r *, struct svc_req *);
+extern  bufnode * nfs_read_1(file_args_r *, CLIENT *);
+extern  bufnode * nfs_read_1_svc(file_args_r *, struct svc_req *);
 #define nfs_cd 4
-extern  int * nfs_cd_1(file_args_r *, CLIENT *);
-extern  int * nfs_cd_1_svc(file_args_r *, struct svc_req *);
+extern  int * nfs_cd_1(bufnode *, CLIENT *);
+extern  int * nfs_cd_1_svc(bufnode *, struct svc_req *);
+#define getattr 5
+extern  bufnode * getattr_1(bufnode *, CLIENT *);
+extern  bufnode * getattr_1_svc(bufnode *, struct svc_req *);
+#define setattr 6
+extern  int * setattr_1(bufnode *, CLIENT *);
+extern  int * setattr_1_svc(bufnode *, struct svc_req *);
+#define nfs_remove 7
+extern  int * nfs_remove_1(bufnode *, CLIENT *);
+extern  int * nfs_remove_1_svc(bufnode *, struct svc_req *);
+#define nfs_mkdir 8
+extern  int * nfs_mkdir_1(bufnode *, CLIENT *);
+extern  int * nfs_mkdir_1_svc(bufnode *, struct svc_req *);
+#define nfs_touch 9
+extern  int * nfs_touch_1(bufnode *, CLIENT *);
+extern  int * nfs_touch_1_svc(bufnode *, struct svc_req *);
 extern int nfs_arya_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define nfs_ls 1
-extern  bufsize * nfs_ls_1();
-extern  bufsize * nfs_ls_1_svc();
+extern  bufnode * nfs_ls_1();
+extern  bufnode * nfs_ls_1_svc();
 #define nfs_write 2
 extern  int * nfs_write_1();
 extern  int * nfs_write_1_svc();
 #define nfs_read 3
-extern  bufsize * nfs_read_1();
-extern  bufsize * nfs_read_1_svc();
+extern  bufnode * nfs_read_1();
+extern  bufnode * nfs_read_1_svc();
 #define nfs_cd 4
 extern  int * nfs_cd_1();
 extern  int * nfs_cd_1_svc();
+#define getattr 5
+extern  bufnode * getattr_1();
+extern  bufnode * getattr_1_svc();
+#define setattr 6
+extern  int * setattr_1();
+extern  int * setattr_1_svc();
+#define nfs_remove 7
+extern  int * nfs_remove_1();
+extern  int * nfs_remove_1_svc();
+#define nfs_mkdir 8
+extern  int * nfs_mkdir_1();
+extern  int * nfs_mkdir_1_svc();
+#define nfs_touch 9
+extern  int * nfs_touch_1();
+extern  int * nfs_touch_1_svc();
 extern int nfs_arya_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
-extern  bool_t xdr_bufptr (XDR *, bufptr*);
-extern  bool_t xdr_bufsize (XDR *, bufsize*);
+extern  bool_t xdr_bufnode (XDR *, bufnode*);
 extern  bool_t xdr_file_args_r (XDR *, file_args_r*);
 extern  bool_t xdr_file_args_w (XDR *, file_args_w*);
 
 #else /* K&R C */
-extern bool_t xdr_bufptr ();
-extern bool_t xdr_bufsize ();
+extern bool_t xdr_bufnode ();
 extern bool_t xdr_file_args_r ();
 extern bool_t xdr_file_args_w ();
 

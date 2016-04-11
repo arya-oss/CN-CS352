@@ -8,11 +8,6 @@ Author: Rajmani Arya
 Dependencies: rpcbind
 sudo apt-get install rpcbind
 
-NOTE:
-	permission bit is not working properly in these cmds
-	setattr, mkdir and touch because input is given in octal
-	it should be translated a/c to mode_t but right now it's not done !
-
 problem description:
 	Implement Network file system using sun RPC.
 	

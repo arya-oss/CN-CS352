@@ -1,6 +1,4 @@
-typedef struct bufsize * bufptr;
-
-struct bufsize {
+struct bufnode {
 	char buffer[1024];
 	unsigned int size;
 };
@@ -18,21 +16,16 @@ struct file_args_w {
 	unsigned int size;
 };
 
-struct attr {
-	int ret;
-	unsigned int mode;
-};
-
 program nfs_arya {
 	version nfs {
-		bufsize nfs_ls(file_args_r)=1;
+		bufnode nfs_ls(bufnode)=1;
 		int nfs_write(file_args_w)=2;
-		bufsize nfs_read(file_args_r)=3;
-		int nfs_cd(file_args_r)=4;
-		attr getattr(bufsize)=5;
-		int setattr(bufsize)=6;
-		int remove(bufsize)=7;
-		int mkdir(bufsize)=8;
-		int touch(bufsize)=9;
+		bufnode nfs_read(file_args_r)=3;
+		int nfs_cd(bufnode)=4;
+		bufnode getattr(bufnode)=5;
+		int setattr(bufnode)=6;
+		int nfs_remove(bufnode)=7;
+		int nfs_mkdir(bufnode)=8;
+		int nfs_touch(bufnode)=9;
 	}=1;
 } = 0x2fffffff;

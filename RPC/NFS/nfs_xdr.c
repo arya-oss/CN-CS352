@@ -6,17 +6,7 @@
 #include "nfs.h"
 
 bool_t
-xdr_bufptr (XDR *xdrs, bufptr *objp)
-{
-	register int32_t *buf;
-
-	 if (!xdr_pointer (xdrs, (char **)objp, sizeof (struct bufsize), (xdrproc_t) xdr_bufsize))
-		 return FALSE;
-	return TRUE;
-}
-
-bool_t
-xdr_bufsize (XDR *xdrs, bufsize *objp)
+xdr_bufnode (XDR *xdrs, bufnode *objp)
 {
 	register int32_t *buf;
 
