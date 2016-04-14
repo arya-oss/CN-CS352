@@ -17,6 +17,16 @@
 
 #define BUFSIZE 65536
 
+/**
+ * Title: TCP Header and data print
+ * description: catch ip_packets and print tcp header and payload data
+ *
+ * Compile:
+ *		gcc tcpheader.c -o tcpheader
+ * RUN:
+ *	sudo ./tcpheader
+ */
+
 int main(int argc, char * argv[]) {
 	struct sockaddr_in s_addr, d_addr;
 	int rsfd, n, len; char buf[BUFSIZE]; char addr[32];
