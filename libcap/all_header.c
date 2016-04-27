@@ -30,7 +30,7 @@
  * tcp header -> /usr/include/netinet/tcp.h
  * udp header -> /usr/include/netinet/udp.h
  * 
- * Dependancies: libpcap , to install -> sudo apt-get install libpacp-dev
+ * Dependancies: libpcap , to install -> sudo apt-get install libpcap-dev
  * Compile:
  * 		gcc all_header.c -o sniffer -lpcap
  *
